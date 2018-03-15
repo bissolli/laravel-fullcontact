@@ -1,0 +1,39 @@
+{
+    "name": "bissolli/laravel-fullcontact",
+    "description": "Laravel FullContact",
+    "license": "MIT",
+    "keywords": [ "social", "contacts", "api" ],
+    "authors": [
+        {
+            "name": "Gustavo Bissolli",
+            "email": "gustavo.bissolli@gmail.com"
+        }
+    ],
+    "homepage": "https://github.com/bissolli/laravel-fullcontact",
+    "type": "library",
+    "require": {
+        "guzzlehttp/guzzle": "6.*",
+        "php": ">= 5.6",
+        "illuminate/support": "5.2.*|5.3.*|5.4.*|5.5.*|5.6.*"
+    },
+    "require-dev": {
+        "mockery/mockery": "~0.9|~1.0",
+        "phpunit/phpunit": "5.5.*|6.0.*|7.0.*",
+        "laravel/framework": "5.2.*|5.3.*|5.4.*|5.5.*|5.6.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Bissolli\\FullContact\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Bissolli\\FullContact\\FullContactServiceProvider"
+            ],
+            "aliases": {
+                "FullContact": "Bissolli\\FullContact\\FullContactFacade"
+            }
+        }
+    }
+}
