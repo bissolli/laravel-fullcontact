@@ -40,7 +40,6 @@ class FullContact
 			" does not support the [" . $params['method'] . "] method");
 		}
 
-		$params['apiKey'] = urlencode($this->_apiKey);
 		if($resourceUri === NULL)
 		{
 			$fullUrl = $this->_baseUri . $this->_version . $this->_resourceUri .'?' . http_build_query($params);
@@ -69,11 +68,18 @@ class FullContact
 		}
 		else
 		{
+			// create header
+			$header = [];
+			$header[] = 'Content-type: application/json';
+			$header[] = 'Authorization: '.$this->_apiKey;
+
 			//open connection
 			$connection = curl_init($fullUrl);
+			curl_setopt($connection, CURLOPT_HTTPHEADER, $header);
 			curl_setopt($connection, CURLOPT_SSL_VERIFYHOST, 0);
 			curl_setopt($connection, CURLOPT_SSL_VERIFYPEER, 0);
 			curl_setopt($connection, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($connection, CURLOPT_POST, 1);
 			curl_setopt($connection, CURLOPT_USERAGENT, self::USER_AGENT);
 
 			//execute request
