@@ -10,6 +10,7 @@ class FullContact
 	protected $_version = 'v2';
 
 	protected $_apiKey = null;
+	protected $_bearerApiKey = null;
 
 	public $response_obj  = null;
 	public $response_code = null;
@@ -24,6 +25,7 @@ class FullContact
 	public function __construct($api_key)
 	{
 		$this->_apiKey = $api_key;
+		$this->_bearerApiKey = strpos($api_key, 'Bearer ') === false ? 'Bearer '.$api_key : $api_key;
 	}
 
     /**
@@ -71,7 +73,7 @@ class FullContact
 			// create header
 			$header = [];
 			$header[] = 'Content-type: application/json';
-			$header[] = 'Authorization: '.$this->_apiKey;
+			$header[] = 'Authorization: '.$this->_bearerApiKey;
 
 			//open connection
 			$connection = curl_init($fullUrl);
