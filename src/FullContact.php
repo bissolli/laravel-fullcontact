@@ -10,6 +10,7 @@ class FullContact
 	protected $_version = 'v2';
 
 	protected $_apiKey = null;
+	protected $_bearerApiKey = null;
 
 	public $response_obj  = null;
 	public $response_code = null;
@@ -24,6 +25,7 @@ class FullContact
 	public function __construct($api_key)
 	{
 		$this->_apiKey = $api_key;
+		$this->_bearerApiKey = strpos($api_key, 'Bearer ') === false ? 'Bearer '.$api_key : $api_key;
 	}
 
     /**
@@ -40,7 +42,6 @@ class FullContact
 			" does not support the [" . $params['method'] . "] method");
 		}
 
-		$params['apiKey'] = urlencode($this->_apiKey);
 		if($resourceUri === NULL)
 		{
 			$fullUrl = $this->_baseUri . $this->_version . $this->_resourceUri .'?' . http_build_query($params);
@@ -69,11 +70,18 @@ class FullContact
 		}
 		else
 		{
+			// create header
+			$header = [];
+			$header[] = 'Content-type: application/json';
+			$header[] = 'Authorization: '.$this->_bearerApiKey;
+
 			//open connection
 			$connection = curl_init($fullUrl);
+			curl_setopt($connection, CURLOPT_HTTPHEADER, $header);
 			curl_setopt($connection, CURLOPT_SSL_VERIFYHOST, 0);
 			curl_setopt($connection, CURLOPT_SSL_VERIFYPEER, 0);
 			curl_setopt($connection, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($connection, CURLOPT_POST, 1);
 			curl_setopt($connection, CURLOPT_USERAGENT, self::USER_AGENT);
 
 			//execute request
